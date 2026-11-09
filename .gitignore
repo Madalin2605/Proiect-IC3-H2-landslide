@@ -1,0 +1,9 @@
+# Datele se descarcă separat (vezi README)
+data/
+
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.idea/
