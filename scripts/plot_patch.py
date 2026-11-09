@@ -31,23 +31,24 @@ def main() -> None:
     low, high = np.percentile(rgb, [1, 99])
     rgb = np.clip((rgb - low) / (high - low), 0, 1)
 
-    fig, axes = plt.subplots(1, 4, figsize=(13, 3.6), constrained_layout=True)
+    fig, axes = plt.subplots(1, 4, figsize=(10.4, 2.8), constrained_layout=True)
+    fig.get_layout_engine().set(w_pad=0.1)
     axes[0].imshow(rgb)
     axes[0].set_title("Sentinel-2 RGB (B4, B3, B2)")
     for ax, band, title in [(axes[1], SLOPE, "Pantă (B13)"), (axes[2], DEM, "DEM (B14)")]:
         image = ax.imshow(x[..., band], cmap="viridis")
         ax.set_title(title)
-        fig.colorbar(image, ax=ax, shrink=0.85, label="valoare din fișier")
+        fig.colorbar(image, ax=ax, shrink=0.85, label="valoare scalată")
     axes[3].imshow(mask, cmap="magma", vmin=0, vmax=1, interpolation="nearest")
-    axes[3].set_title(f"Mască (alunecare: {mask.mean() * 100:.1f}%)")
+    axes[3].set_title(f"Mască: {mask.mean() * 100:.1f}% alunecare".replace(".", ","))
     for ax in axes:
         ax.set_xlabel("pixeli (~10 m/pixel)")
-        ax.set_ylabel("pixeli")
-    fig.suptitle(f"Landslide4Sense, {args.split}, image_{args.id}.h5, formă {x.shape}")
+    axes[0].set_ylabel("pixeli")
+    fig.suptitle(f"Landslide4Sense, {args.split}, image_{args.id}.h5, formă {x.shape}", fontsize=10)
 
     args.out.mkdir(parents=True, exist_ok=True)
     path = args.out / f"patch_{args.split}_{args.id}.png"
-    fig.savefig(path, dpi=150)
+    fig.savefig(path, dpi=250)
     print(path)
 
 
