@@ -26,21 +26,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from l4s.data import image_ids, load_image, load_mask  # noqa: E402
 from l4s.features import REPRESENTATIONS, feature_cube, has_relief, indices, valid_pixels  # noqa: E402
+from l4s.metrics import auc  # noqa: E402
 
 POS_PER_PATCH, NEG_PER_PATCH = 100, 300
 EVAL_SPLITS = ["train", "validation"]  # testul nu se folosește la alegerea reprezentării
-
-
-def auc(values: np.ndarray, labels: np.ndarray) -> float:
-    """AUC prin statistica Mann-Whitney, cu ranguri medii la egalități."""
-    order = np.argsort(values, kind="mergesort")
-    _, inverse, counts = np.unique(values[order], return_inverse=True, return_counts=True)
-    ends = np.cumsum(counts)
-    ranks = np.empty(len(values))
-    ranks[order] = (ends - (counts - 1) / 2)[inverse]
-    pos = labels == 1
-    n_pos, n_neg = pos.sum(), (~pos).sum()
-    return float((ranks[pos].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 
 
 def sample_split(data: Path, split: str, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray, dict]:

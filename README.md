@@ -49,6 +49,12 @@ CP2, reprezentarea (A: S2 + indici + pantă + DEM; B: doar pantă + DEM):
 python scripts/describe_representations.py
 ```
 
+CP2, protocolul (5 fold-uri spațiale pe train, cu buffer; validarea și testul oficial rămân separate):
+
+```bash
+python scripts/make_splits.py
+```
+
 Rezultatele ajung în `reports/`. Seed-ul implicit este 42.
 
 ## Structură
