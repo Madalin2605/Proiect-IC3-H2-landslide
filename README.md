@@ -43,6 +43,12 @@ python scripts/check_mask_match.py
 python scripts/plot_patch.py --split train --id 241
 ```
 
+CP2, reprezentarea (A: S2 + indici + pantă + DEM; B: doar pantă + DEM):
+
+```bash
+python scripts/describe_representations.py
+```
+
 Rezultatele ajung în `reports/`. Seed-ul implicit este 42.
 
 ## Structură

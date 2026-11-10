@@ -1,0 +1,103 @@
+{
+  "seed": 42,
+  "representations": {
+    "s2_topo": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7",
+      "B8",
+      "B9",
+      "B10",
+      "B11",
+      "B12",
+      "SLOPE",
+      "DEM",
+      "NDVI",
+      "NDWI",
+      "NBR",
+      "BRIGHT"
+    ],
+    "topo": [
+      "SLOPE",
+      "DEM"
+    ]
+  },
+  "pixels_per_patch": {
+    "landslide": 100,
+    "background": 300
+  },
+  "splits": {
+    "train": {
+      "patches": 3799,
+      "no_relief_patches": 115,
+      "invalid_pixels": 7423,
+      "sampled_landslide": 192525,
+      "sampled_background": 1139700
+    },
+    "validation": {
+      "patches": 245,
+      "no_relief_patches": 0,
+      "invalid_pixels": 256,
+      "sampled_landslide": 11799,
+      "sampled_background": 73500
+    }
+  },
+  "top_features_by_separation": {
+    "train": [
+      {
+        "feature": "NBR",
+        "auc": 0.0676
+      },
+      {
+        "feature": "B4",
+        "auc": 0.9132
+      },
+      {
+        "feature": "BRIGHT",
+        "auc": 0.9016
+      },
+      {
+        "feature": "B2",
+        "auc": 0.884
+      },
+      {
+        "feature": "B3",
+        "auc": 0.8816
+      },
+      {
+        "feature": "NDVI",
+        "auc": 0.1293
+      }
+    ],
+    "validation": [
+      {
+        "feature": "NBR",
+        "auc": 0.0604
+      },
+      {
+        "feature": "NDVI",
+        "auc": 0.0803
+      },
+      {
+        "feature": "B4",
+        "auc": 0.9086
+      },
+      {
+        "feature": "B12",
+        "auc": 0.9028
+      },
+      {
+        "feature": "BRIGHT",
+        "auc": 0.894
+      },
+      {
+        "feature": "B3",
+        "auc": 0.87
+      }
+    ]
+  }
+}
