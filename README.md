@@ -55,6 +55,14 @@ CP2, protocolul (5 fold-uri spațiale pe train, cu buffer; validarea și testul 
 python scripts/make_splits.py
 ```
 
+CP2, baseline-urile (totul negativ, prag NDVI, prag pantă, Random Forest pe A și pe B; ~20 de minute):
+
+```bash
+python scripts/run_baselines.py
+```
+
+Tabelul rezultatelor ajunge în `reports/baseline_results.md`. Pentru o verificare rapidă: `--folds 1 --skip-test`.
+
 Rezultatele ajung în `reports/`. Seed-ul implicit este 42.
 
 ## Structură

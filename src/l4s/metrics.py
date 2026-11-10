@@ -49,6 +49,27 @@ def auc(values: np.ndarray, labels: np.ndarray) -> float:
     return float((ranks[pos].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 
 
+def best_threshold(values: np.ndarray, labels: np.ndarray, weights: np.ndarray | None = None) -> tuple[float, float]:
+    """Pragul care maximizează F1 (pozitiv dacă scor >= prag) și F1-ul obținut.
+
+    `weights` corectează eșantionarea stratificată: fiecare pixel eșantionat cântărește
+    câți pixeli reali din clasa lui reprezintă, deci F1 corespunde prevalenței reale.
+    """
+    values = np.asarray(values, dtype=np.float64)
+    labels = np.asarray(labels) == 1
+    weights = np.ones(len(values)) if weights is None else np.asarray(weights, dtype=np.float64)
+    order = np.argsort(-values, kind="mergesort")
+    v, y, w = values[order], labels[order], weights[order]
+    tp = np.cumsum(w * y)
+    fp = np.cumsum(w * ~y)
+    total_pos = tp[-1]
+    f1 = 2 * tp / np.maximum(2 * tp + fp + (total_pos - tp), 1e-12)
+    last_of_value = np.r_[v[1:] != v[:-1], True]  # pragul e valid doar la schimbarea scorului
+    candidates = np.flatnonzero(last_of_value)
+    best = candidates[np.argmax(f1[candidates])]
+    return float(v[best]), float(f1[best])
+
+
 def average_precision(values: np.ndarray, labels: np.ndarray) -> float:
     """AP: media preciziei la fiecare pixel pozitiv, cu scorurile sortate descrescător."""
     order = np.argsort(-np.asarray(values, dtype=np.float64), kind="mergesort")

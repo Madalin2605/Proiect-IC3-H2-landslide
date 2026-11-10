@@ -48,7 +48,7 @@ def main() -> None:
 
     args.out.mkdir(parents=True, exist_ok=True)
     path = args.out / f"patch_{args.split}_{args.id}.png"
-    fig.savefig(path, dpi=250)
+    fig.savefig(path, dpi=250, bbox_inches="tight", pad_inches=0.05)
     print(path)
 
 
