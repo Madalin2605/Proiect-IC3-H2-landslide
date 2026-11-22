@@ -5,7 +5,7 @@ patch-ului cu ID-ul următor mult mai des decât la perechi aleatoare, atunci
 ID-urile apropiate sunt zone apropiate, iar un split aleator ar produce leakage.
 
 Rulare, din rădăcina repo-ului:  python scripts/check_structure.py
-Rezultat: reports/structure_summary.json
+Rezultat: reports/CP1/structure_summary.json
 """
 import argparse
 import json
@@ -27,7 +27,7 @@ def edge_gap(a: np.ndarray, b: np.ndarray) -> float:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=ROOT / "data")
-    parser.add_argument("--out", type=Path, default=ROOT / "reports")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP1")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 

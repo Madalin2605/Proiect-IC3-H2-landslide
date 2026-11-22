@@ -1,8 +1,25 @@
 # IC3 · H2 · Versant: susceptibilitate la alunecări
 
-Mini-twin pentru detecția alunecărilor din Sentinel-2 și DEM/pantă, cu un proxy topografic de susceptibilitate, pe setul Landslide4Sense.
+Mini-twin pentru detecția alunecărilor din Sentinel-2 și DEM/pantă, cu un proxy topografic de susceptibilitate, pe setul Landslide4Sense. Clientul este un consiliu județean care vrea să prioritizeze verificările în teren.
 
-Descrierea datelor: [`docs/datacard_H2.md`](docs/datacard_H2.md).
+**Stadiu: CP3 (Învățare).** Modelul v1 (U-Net) a fost comparat cu baseline-urile din CP2 pe 3 seed-uri, cu intervale de încredere de 95%.
+
+| Model (F1 pe clasa alunecare, %) | CV G1 | Fold 5 (altă zonă) | Validare | Test oficial |
+|---|---:|---:|---:|---:|
+| **U-Net, A** | **73,3** [71,8; 74,6] | **30,2** [20,6; 37,7] | **57,3** [44,1; 67,9] | **59,4** [55,8; 63,3] |
+| RF pe pixeli, A (cel mai bun baseline) | 68,2 [66,6; 69,6] | 11,3 [8,1; 15,5] | 44,8 [32,7; 54,4] | 45,3 [42,1; 48,9] |
+| U-Net, B (doar topografie) | 7,2 [6,5; 7,9] | 4,3 [2,9; 5,4] | 4,5 [2,5; 6,8] | 5,2 [4,0; 6,5] |
+
+A = Sentinel-2 + indici + pantă + DEM; B = doar pantă + DEM. U-Net-ul bate RF pe toate evaluările, cu intervalul diferenței peste zero peste tot. Transferul către o zonă nouă (fold 5) rămâne slab. Reprezentarea B dă un rezultat negativ: nu se distinge de un prag simplu pe pantă. Detalii în [`docs/results_H2.md`](docs/results_H2.md).
+
+## Documente
+
+| Document | Etapa | Conținut |
+|---|---|---|
+| [`docs/datacard_H2.md`](docs/datacard_H2.md) | CP1 | Descrierea datelor, verificări, limite |
+| [`docs/soa_H2.md`](docs/soa_H2.md) | CP1 | Stadiul actual (literatură) |
+| [`docs/methods_H2.md`](docs/methods_H2.md) | CP2 | Reprezentările A și B, protocolul cu fold-uri spațiale, baseline-urile |
+| [`docs/results_H2.md`](docs/results_H2.md) | CP3 | Modelul v1 față de baseline-uri, pe seed-uri, cu intervale |
 
 ## Instalare
 
@@ -10,6 +27,12 @@ Descrierea datelor: [`docs/datacard_H2.md`](docs/datacard_H2.md).
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+Pentru CP3 e nevoie și de PyTorch cu CUDA. Nu vine de pe PyPI, se instalează separat (testat pe Python 3.12, driver CUDA 12.1, GTX 1650 de 4 GB):
+
+```bash
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
 ```
 
 ## Date
@@ -34,7 +57,9 @@ python scripts/download_masks.py
 
 ## Rulare
 
-Din rădăcina repo-ului:
+Toate comenzile se rulează din rădăcina repo-ului. Fiecare etapă își scrie rezultatele în `reports/CP1/`, `reports/CP2/` sau `reports/CP3/`.
+
+**CP1: datele**
 
 ```bash
 python scripts/check_data.py
@@ -43,34 +68,36 @@ python scripts/check_mask_match.py
 python scripts/plot_patch.py --split train --id 241
 ```
 
-CP2, reprezentarea (A: S2 + indici + pantă + DEM; B: doar pantă + DEM):
+**CP2: reprezentarea, protocolul și baseline-urile**
 
 ```bash
-python scripts/describe_representations.py
+python scripts/describe_representations.py   # reprezentările A și B, AUC pe trăsătură
+python scripts/make_splits.py                # 5 fold-uri spațiale pe train, cu buffer
+python scripts/run_baselines.py              # totul negativ, praguri, RF pe A și B, seed 42 (~20 de minute)
 ```
 
-CP2, protocolul (5 fold-uri spațiale pe train, cu buffer; validarea și testul oficial rămân separate):
+Pentru o verificare rapidă a baseline-urilor: `--folds 1 --skip-test`.
+
+**CP3: modelul v1 față de baseline-uri, pe 3 seed-uri**
 
 ```bash
-python scripts/make_splits.py
+python scripts/build_cache.py                # cache NumPy pentru rețele (~2,9 GB în data/cache/) + verificări
+python scripts/train_unet.py --rep s2_topo   # U-Net pe A: 3 seed-uri x (5 fold-uri + tot train-ul), ~4 ore pe GPU
+python scripts/train_unet.py --rep topo      # U-Net pe B, ~4 ore pe GPU
+python scripts/run_rf_seeds.py               # RF și praguri pe aceleași seed-uri și fold-uri, ~1 oră pe procesor
+python scripts/aggregate_results.py          # intervale, comparații pereche, tabele, figură (câteva secunde)
 ```
 
-CP2, baseline-urile (totul negativ, prag NDVI, prag pantă, Random Forest pe A și pe B; ~20 de minute):
-
-```bash
-python scripts/run_baselines.py
-```
-
-Tabelul rezultatelor ajunge în `reports/baseline_results.md`. Pentru o verificare rapidă: `--folds 1 --skip-test`.
-
-Rezultatele ajung în `reports/`. Seed-ul implicit este 42.
+Antrenarea și RF-ul pot fi oprite și repornite: rulările terminate nu se refac. Rezultatele pe rulare (`patches.csv`, `run.json`, `hist.npz`) sunt în repo, deci `aggregate_results.py` se poate rula fără reantrenare. Greutățile modelelor (`model.pt`) sunt ignorate de Git.
 
 ## Structură
 
 | Cale | Conținut |
 |---|---|
-| `src/l4s/` | Citirea patch-urilor |
+| `src/l4s/` | Citirea patch-urilor, trăsături, metrici, fold-uri spațiale, cache și U-Net |
 | `scripts/` | Pașii care se rulează |
-| `reports/` | Statistici și figuri generate |
-| `docs/` | Data card și documente de proiect |
-| `data/` | Setul de date, ignorat de Git |
+| `reports/CP1/` | Statistici despre date și verificări (CP1) |
+| `reports/CP2/` | Reprezentări, fold-uri (`splits.json`), rezultatele baseline (CP2) |
+| `reports/CP3/` | `results_v1_H2.csv`, tabelele din `results_v1.md`, figura și rulările din `runs/` (CP3) |
+| `docs/` | Data card și secțiunile articolului |
+| `data/` | Setul de date și cache-ul, ignorate de Git |

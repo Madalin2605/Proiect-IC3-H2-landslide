@@ -105,6 +105,31 @@ def spatial_folds(ids: list[int], excluded: set[int] = frozenset(), buffer: int 
     return folds
 
 
+def inner_split(train_ids: list[int], test_ids: list[int], rows: int = 7,
+                buffer: int = DEFAULT_BUFFER) -> tuple[list[int], list[int], list[int]]:
+    """Validarea internă pentru rețele (CP3): alege epoca și pragul fără să atingă fold-ul de test.
+
+    Din patch-urile de antrenare ale fold-ului se scot `rows` rânduri întregi din G1, de la
+    capătul grilei aflat cel mai departe de fold-ul de test (jos, dacă testul nu e în G1),
+    plus `buffer` rânduri între ele și restul antrenării. Întoarce (fit, inner_val, buffer).
+    """
+    g1 = GRIDS[0]
+    test_rows = [g1.position(i)[0] for i in test_ids if g1.contains(i)]
+    bottom = not test_rows or float(np.mean(test_rows)) < g1.rows / 2
+    if bottom:
+        val_rows, buf_rows = range(g1.rows - rows, g1.rows), range(g1.rows - rows - buffer, g1.rows - rows)
+    else:
+        val_rows, buf_rows = range(rows), range(rows, rows + buffer)
+
+    def in_rows(i: int, selected: range) -> bool:
+        return g1.contains(i) and g1.position(i)[0] in selected
+
+    val = [i for i in train_ids if in_rows(i, val_rows)]
+    buf = [i for i in train_ids if in_rows(i, buf_rows)]
+    drop = set(val) | set(buf)
+    return [i for i in train_ids if i not in drop], val, buf
+
+
 def load_folds(path: Path) -> list[dict]:
     """Citește fold-urile salvate de scripts/make_splits.py."""
     return json.loads(Path(path).read_text(encoding="utf-8"))["folds"]

@@ -35,7 +35,7 @@ Indicii derivați sunt:
 
 Trăsăturile spectrale separă puternic clasele, iar ordinea lor se păstrează pe validare, care vine din alte situri. Topografia singură separă slab, iar DEM-ul e aproape de nivelul întâmplător pe validare.
 
-![AUC pe trăsătură](../reports/figures/representation_auc.png)
+![AUC pe trăsătură](../reports/CP2/figures/representation_auc.png)
 
 *Figura 1. AUC-ul fiecărei trăsături luate singure, pe train și pe validare. Zona verde marchează reprezentarea B.*
 
@@ -80,7 +80,7 @@ Continuitatea înseamnă diferența medie dintre margini sub percentila 5 a pere
 
 Un split aleator ar pune practic fiecare patch de test lângă un patch de antrenare. Așa se explică, cel mai probabil, rezultatele umflate raportate cu validare încrucișată pe train în literatură.
 
-![Fold-uri spațiale](../reports/figures/spatial_folds.png)
+![Fold-uri spațiale](../reports/CP2/figures/spatial_folds.png)
 
 *Figura 2. Stânga: fold-urile pe cele 5 grile (un pătrat = un patch de 1,28 km), cu buffer-ul ilustrat pentru fold-ul 2 și patch-urile excluse. Dreapta: proporția de pixeli de alunecare în fiecare patch.*
 
@@ -120,7 +120,7 @@ Baseline-urile merg de la trivial la clasicul puternic (`scripts/run_baselines.p
 
 F1 este în procente. Referința U-Net vine din Ghorbanzadeh et al. (2022b), pe același test oficial. Pe test, RF (A) are precizia 43,5% și recall-ul 50,1%, iar pragul NDVI are precizia 22,7% și recall-ul 75,1%.
 
-![F1 baseline](../reports/figures/baseline_f1.png)
+![F1 baseline](../reports/CP2/figures/baseline_f1.png)
 
 *Figura 3. F1 pe clasa alunecare pentru baseline-uri, pe cele patru evaluări. Linia punctată marchează U-Net-ul din literatură.*
 
@@ -147,4 +147,4 @@ python scripts/make_splits.py                # protocolul, ~1 min
 python scripts/run_baselines.py              # baseline-urile, ~20 min
 ```
 
-Rezultatele ajung în `reports/`: `representation_stats.csv`, `splits.json`, `baseline_results.{csv,json,md}` și figurile din `reports/figures/`.
+Rezultatele ajung în `reports/CP2/`: `representation_stats.csv`, `splits.json`, `baseline_results.{csv,json,md}` și figurile din `reports/CP2/figures/`.

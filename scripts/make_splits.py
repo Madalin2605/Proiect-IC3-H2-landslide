@@ -9,7 +9,7 @@ Pași:
    pentru split aleator, pentru blocuri fără buffer și pentru protocolul ales.
 
 Rulare, din rădăcina repo-ului:  python scripts/make_splits.py
-Rezultate: reports/splits.json, reports/figures/spatial_folds.png
+Rezultate: reports/CP2/splits.json, reports/CP2/figures/spatial_folds.png
 """
 import argparse
 import json
@@ -194,7 +194,7 @@ def plot_folds(folds: list[dict], info: dict, out: Path, show_buffer_for: int = 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=ROOT / "data")
-    parser.add_argument("--out", type=Path, default=ROOT / "reports")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP2")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--buffer", type=int, default=DEFAULT_BUFFER)
     args = parser.parse_args()

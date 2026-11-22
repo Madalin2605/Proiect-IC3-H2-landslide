@@ -22,7 +22,7 @@ def main() -> None:
     parser.add_argument("--data", type=Path, default=ROOT / "data")
     parser.add_argument("--split", default="train", choices=["train"])
     parser.add_argument("--id", type=int, default=241)
-    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "figures")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP1" / "figures")
     args = parser.parse_args()
 
     x = load_image(args.data, args.split, args.id)

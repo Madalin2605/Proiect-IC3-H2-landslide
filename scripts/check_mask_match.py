@@ -6,7 +6,7 @@ corectă și o dată pe perechi amestecate. Dacă măștile corespund, diferenț
 clar pozitivă pe perechile corecte și apropiată de zero pe cele amestecate.
 
 Rulare, din rădăcina repo-ului:  python scripts/check_mask_match.py
-Rezultat: reports/mask_match.json
+Rezultat: reports/CP1/mask_match.json
 """
 import argparse
 import json
@@ -36,7 +36,7 @@ def contrast(v: np.ndarray, mask: np.ndarray) -> float:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=ROOT / "data")
-    parser.add_argument("--out", type=Path, default=ROOT / "reports")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP1")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 

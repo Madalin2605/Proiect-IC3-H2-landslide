@@ -1,0 +1,29 @@
+{
+  "model": "rule",
+  "key": "rule_slope",
+  "representation": "topo",
+  "fold": "3",
+  "seed": 43,
+  "config": {
+    "pos_per_patch": 50,
+    "neg_per_patch": 150,
+    "feature": "SLOPE",
+    "sign": 1.0
+  },
+  "n_fit": 2864,
+  "threshold": 2.0703125,
+  "train_f1": 0.06987762619618301,
+  "importances": null,
+  "results": {
+    "cv_fold_3": {
+      "f1": 0.06605736670398753,
+      "precision": 0.04135831613158242,
+      "recall": 0.16399411158064875,
+      "iou": 0.03415683876382939,
+      "auc": 0.6338775411979859,
+      "ap": 0.04206576231638979,
+      "patches": 738
+    }
+  },
+  "runtime_seconds": 155
+}

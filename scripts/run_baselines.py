@@ -1,4 +1,4 @@
-"""CP2, etapa 3: rulează baseline-urile pe protocolul din reports/splits.json.
+"""CP2, etapa 3: rulează baseline-urile pe protocolul din reports/CP2/splits.json.
 
 Baseline-uri, de la trivial la clasicul puternic:
   all_negative     "fără alunecare" peste tot (F1 = 0, arată de ce acuratețea nu ajută)
@@ -19,7 +19,7 @@ Evaluare: pe toți pixelii valizi ai patch-urilor evaluate.
 
 Rulare, din rădăcina repo-ului:  python scripts/run_baselines.py
 Rapid, pentru verificare:        python scripts/run_baselines.py --folds 1 --skip-test
-Rezultate: reports/baseline_results.{csv,json,md}, reports/figures/baseline_f1.png
+Rezultate: reports/CP2/baseline_results.{csv,json,md}, reports/CP2/figures/baseline_f1.png
 """
 import argparse
 import csv
@@ -287,8 +287,8 @@ def plot_f1(rows: list[dict], summary: dict, path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=ROOT / "data")
-    parser.add_argument("--splits", type=Path, default=ROOT / "reports" / "splits.json")
-    parser.add_argument("--out", type=Path, default=ROOT / "reports")
+    parser.add_argument("--splits", type=Path, default=ROOT / "reports" / "CP2" / "splits.json")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP2")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--folds", type=str, default="1,2,3,4,5", help="fold-urile CV de rulat; gol = fără CV")
     parser.add_argument("--skip-test", action="store_true", help="nu evalua pe testul oficial")
@@ -308,7 +308,7 @@ def main() -> None:
                 setattr(args, key, value)
         write_markdown(saved["rows"], saved["summary"], args.out / "baseline_results.md", args)
         plot_f1(saved["rows"], saved["summary"], args.out / "figures" / "baseline_f1.png")
-        print("Refăcut: reports/baseline_results.md și reports/figures/baseline_f1.png")
+        print("Refăcut: reports/CP2/baseline_results.md și reports/CP2/figures/baseline_f1.png")
         return
 
     start = time.time()
@@ -381,7 +381,7 @@ def main() -> None:
     write_markdown(rows, summary, args.out / "baseline_results.md", args)
     (args.out / "figures").mkdir(parents=True, exist_ok=True)
     plot_f1(rows, summary, args.out / "figures" / "baseline_f1.png")
-    print(f"Gata în {time.time() - start:.0f} s. Vezi reports/baseline_results.md")
+    print(f"Gata în {time.time() - start:.0f} s. Vezi reports/CP2/baseline_results.md")
 
 
 if __name__ == "__main__":

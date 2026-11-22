@@ -7,8 +7,8 @@ separare; sub 0,5 înseamnă că valoarea scade pe alunecări (de ex. NDVI).
 Eșantionarea stratificată schimbă prevalența, dar nu și AUC-ul.
 
 Rulare, din rădăcina repo-ului:  python scripts/describe_representations.py
-Rezultate: reports/representation_stats.csv, reports/representation_summary.json,
-           reports/figures/representation_auc.png, reports/figures/features_train_241.png
+Rezultate: reports/CP2/representation_stats.csv, reports/CP2/representation_summary.json,
+           reports/CP2/figures/representation_auc.png, reports/CP2/figures/features_train_241.png
 """
 import argparse
 import csv
@@ -104,7 +104,7 @@ def plot_auc(rows: list[dict], out: Path) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=ROOT / "data")
-    parser.add_argument("--out", type=Path, default=ROOT / "reports")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP2")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--patch", type=int, default=241)
     args = parser.parse_args()

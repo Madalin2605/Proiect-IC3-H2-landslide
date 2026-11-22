@@ -1,0 +1,34 @@
+{
+  "model": "rf",
+  "key": "rf_topo",
+  "representation": "topo",
+  "fold": "2",
+  "seed": 44,
+  "config": {
+    "pos_per_patch": 50,
+    "neg_per_patch": 150,
+    "trees": 100,
+    "max_depth": 20,
+    "min_leaf": 5,
+    "max_features": "sqrt"
+  },
+  "n_fit": 2823,
+  "threshold": 0.2853567275149755,
+  "train_f1": 0.08387894951867331,
+  "importances": {
+    "SLOPE": 0.278,
+    "DEM": 0.722
+  },
+  "results": {
+    "cv_fold_2": {
+      "f1": 0.044621826746924886,
+      "precision": 0.027387256611633857,
+      "recall": 0.12036906905827251,
+      "iou": 0.02282004952151509,
+      "auc": 0.5310635627753203,
+      "ap": 0.026074053888818564,
+      "patches": 779
+    }
+  },
+  "runtime_seconds": 155
+}

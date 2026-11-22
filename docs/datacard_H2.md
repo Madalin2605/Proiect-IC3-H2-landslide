@@ -41,7 +41,7 @@ Documentația nu precizează unitățile sau scalarea. Valorile nu sunt reflecta
 
 - Benzile Sentinel-2 au media pe train între 0,92 și 1,17, deci par scalate cu o constantă pe bandă. Aceasta este o deducție, nu o informație documentată.
 - Panta are valori între 0 și 4,04, iar DEM între 0 și 5,12 pe train.
-- Statisticile complete pe bandă și split sunt în [`reports/band_stats.csv`](../reports/band_stats.csv).
+- Statisticile complete pe bandă și split sunt în [`reports/CP1/band_stats.csv`](../reports/CP1/band_stats.csv).
 
 ## Împărțire train / validare / test
 
@@ -53,7 +53,7 @@ Documentația nu precizează unitățile sau scalarea. Valorile nu sunt reflecta
 
 Împărțirea este cea oficială a competiției. README-ul IARAI spune că măștile există doar pentru train, așa că măștile de validare și test provin de pe Hugging Face, iar imaginile de pe Kaggle.
 
-**Combinarea celor două surse a fost verificată [măsurat].** NDVI este mai mic în interiorul măștii decât în afara ei la 100% din patch-urile de validare cu alunecări și la 99,8% din cele de test. La perechi imagine–mască amestecate, proporția scade la 47% și 46%. Rezultatul este în [`reports/mask_match.json`](../reports/mask_match.json).
+**Combinarea celor două surse a fost verificată [măsurat].** NDVI este mai mic în interiorul măștii decât în afara ei la 100% din patch-urile de validare cu alunecări și la 99,8% din cele de test. La perechi imagine–mască amestecate, proporția scade la 47% și 46%. Rezultatul este în [`reports/CP1/mask_match.json`](../reports/CP1/mask_match.json).
 
 ## Controale de calitate [măsurat]
 

@@ -1,0 +1,29 @@
+{
+  "model": "rule",
+  "key": "rule_ndvi",
+  "representation": "s2_topo",
+  "fold": "3",
+  "seed": 42,
+  "config": {
+    "pos_per_patch": 50,
+    "neg_per_patch": 150,
+    "feature": "NDVI",
+    "sign": -1.0
+  },
+  "n_fit": 2864,
+  "threshold": 0.40576171875,
+  "train_f1": 0.21982879534885166,
+  "importances": null,
+  "results": {
+    "cv_fold_3": {
+      "f1": 0.2897401072856145,
+      "precision": 0.18535900173698253,
+      "recall": 0.6632172429462777,
+      "iou": 0.16941291117209242,
+      "auc": 0.9149133756068378,
+      "ap": 0.165605981729035,
+      "patches": 738
+    }
+  },
+  "runtime_seconds": 156
+}

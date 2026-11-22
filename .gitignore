@@ -7,3 +7,6 @@ __pycache__/
 .ipynb_checkpoints/
 .vscode/
 .idea/
+
+# Greutăți de modele (rulările full de la CP3)
+*.pt

@@ -1,7 +1,7 @@
 """Citește toate patch-urile și scrie statisticile folosite în data card.
 
 Rulare, din rădăcina repo-ului:  python scripts/check_data.py
-Rezultate: reports/data_summary.json și reports/band_stats.csv
+Rezultate: reports/CP1/data_summary.json și reports/CP1/band_stats.csv
 """
 import argparse
 import csv
@@ -38,7 +38,7 @@ def duplicates(hashes: dict[str, list[tuple[str, int]]]) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=Path, default=ROOT / "data")
-    parser.add_argument("--out", type=Path, default=ROOT / "reports")
+    parser.add_argument("--out", type=Path, default=ROOT / "reports" / "CP1")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
